@@ -17,9 +17,8 @@ export default class Home extends Component {
                     content={top.content}
                 />
                 <div className={'features'}>
-                    <h2>{features.title}</h2>
                     <div className={'items'}>
-                        {features.items.map((item) => (
+                        {features.map((item) => (
                             <div key={item.title}>
                                 <h2>{item.title}</h2>
                                 <p>{item.text}</p>
