@@ -18,7 +18,7 @@ export default class Home extends Component {
                 />
                 <div className={'features'}>
                     <div className={'items'}>
-                        {features.map((item) => (
+                        {features.items.map((item) => (
                             <div key={item.name}>
                                 <h2>{item.name}</h2>
                                 <p>{item.description}</p>
