@@ -11,12 +11,8 @@ collections:
         name: "home"
         file: "content/home.md"
         fields:
-          - label: 'Top'
-            name: "top"
-            widget: list
-            fields:
-              - { label: "Title", name: "title", widget: "string"}
-              - { label: "Content", name: "content", widget: "text" }
+          - { label: "Title", name: "title", widget: "string"}
+          - { label: "Content", name: "content", widget: "text" }
           - label: 'Features'
             name: "features"
             widget: list
