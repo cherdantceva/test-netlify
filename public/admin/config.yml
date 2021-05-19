@@ -13,3 +13,10 @@ collections:
         fields:
           - { label: "Title", name: "title", widget: "string"}
           - { label: "Content", name: "content", widget: "string"}
+          - { label: "Body", name: "body", widget: "markdown"}
+          - label: 'Features'
+                name: "features"
+                widget: list
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+                  - { label: "Text", name: "text", widget: "text" }
