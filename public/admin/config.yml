@@ -19,7 +19,12 @@ collections:
               - { label: "Content", name: "content", widget: "string" }
           - label: 'Features'
             name: "features"
-            widget: list
+            widget: "object"
             fields:
-              - { label: "Name", name: "name", widget: "string"}
-              - { label: "Description", name: "description", widget: "text"}
+              - { label: "Title", name: "title", widget: "string"}
+              - label: 'Items'
+                name: "items"
+                widget: list
+                fields:
+                  - { label: "Name", name: "name", widget: "string"}
+                  - { label: "Description", name: "description", widget: "text"}

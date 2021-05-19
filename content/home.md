@@ -1,6 +1,4 @@
 ---
-title: Awesome kit
-content: ffffff
 top:
   title: kfjlklj
   content: kj;lkj;lkj;lkj
