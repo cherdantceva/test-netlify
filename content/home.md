@@ -1,3 +1,8 @@
 ---
-title: Базовый жизненный стандарт для студентов МФТИ
-content: Целевой капитал позволяет студентам заниматься творчеством и учебой вместо поиска случайных заработков и решения бытовых проблем
+title: Awesome kitties
+content: lalalalalalala
+
+---
+Welcome to my awesome page about cats of the internet.
+
+This page is built with NextJS, and content is managed in Netlify CMS
