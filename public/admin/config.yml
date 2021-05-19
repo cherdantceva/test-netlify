@@ -11,7 +11,7 @@ collections:
         name: "home"
         file: "content/home.md"
         fields:
-          - { label: "Title", name: "title", widget: "string"}
+          - { label: "Title", name: "top:title", widget: "string"}
           - { label: "Content", name: "content", widget: "datetime" }
           - label: 'Cats'
             name: "cats"
