@@ -1,7 +1,6 @@
 ---
-
 title: Awesome kitties
-content: 2019-03-17T19:31:20.591Z
+description: lkjlkjlkjl lkjk lkjlk 
 features:
 - description: 'Maru is a Scottish Fold from Japan, and he loves boxes.'
   name: Maru 
@@ -10,3 +9,4 @@ features:
 - description: 'Grumpy cat is an American celebrity cat known for her grumpy appearance.'
   name: Grumpy cat 
 ---
+

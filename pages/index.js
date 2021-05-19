@@ -5,7 +5,7 @@ import { attributes} from '../content/home.md';
 import HomeTop from "../components/HomeTop";
 export default class Home extends Component {
     render() {
-        let {title, content, features} = attributes;
+        let {title, description, features} = attributes;
         console.log(attributes)
         return (
             <>
@@ -14,7 +14,7 @@ export default class Home extends Component {
                 </Head>
                 <HomeTop
                     title={title}
-                    content={content}
+                    content={description}
                 />
                 <div className={'features'}>
                     <div className={'items'}>
