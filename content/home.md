@@ -1,6 +1,5 @@
 ---
 title: Awesome kit
-description: lkjlkjlkjl lkjk lkjlk
 content: ffffff
 features:
   - description: Maru is a Scottish Fold from Japan, and he loves boxes.
