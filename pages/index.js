@@ -5,7 +5,7 @@ import { attributes} from '../content/home.md';
 import HomeTop from "../components/HomeTop";
 export default class Home extends Component {
     render() {
-        let {title, content, features} = attributes;
+        let {top, features} = attributes;
         console.log(attributes)
         return (
             <>
@@ -13,8 +13,8 @@ export default class Home extends Component {
                     <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
                 </Head>
                 <HomeTop
-                    title={title}
-                    content={content}
+                    title={top.title}
+                    content={top.content}
                 />
                 <div className={'features'}>
                     <div className={'items'}>
