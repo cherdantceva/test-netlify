@@ -1,6 +1,13 @@
 @import "./scss/mixins";
 
 .home-top {
+  @include container;
+  display: flex;
+}
+
+.content, .img-container {
+  flex: 1 0 50%;
+  gap: 20px;
   background: rebeccapurple;
 }
 
