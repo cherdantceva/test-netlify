@@ -1,12 +1,17 @@
 import Head from "next/head"
-import { Component } from 'react'
+import { Component, useState, useEffect } from 'react'
 import { attributes} from '../content/home.md';
 
 import HomeTop from "../components/HomeTop";
-export default class Home extends Component {
-    render() {
+export default function Home() {
         let {top, features} = attributes;
         console.log(attributes)
+         const [success, setSuccess] = useState(false);
+        useEffect(() => {
+            if ( window.location.search.includes('success=true') ) {
+                setSuccess(true);
+            }
+        }, []);
         return (
             <>
                 <Head>
@@ -26,9 +31,14 @@ export default class Home extends Component {
                         ))}
                     </div>
                 </div>
+                {success && (
+                    <p style={{ color: 'green'}}>
+                        Successfully submitted form!
+                    </p>
+                )}
                 <div className={'grid'}>
                     <div className={'card'}>
-                        <form name="contact" method="POST" data-netlify="true">
+                        <form name="contact" method="POST" data-netlify="true" action="/?success=true">
                             <input type="hidden" name="form-name" value="contact" />
                             <p>
                                 <label htmlFor="name">Name</label>
@@ -50,6 +60,6 @@ export default class Home extends Component {
                 </div>
             </>
         )
-    }
+
 }
 
