@@ -39,7 +39,7 @@ export default function Home() {
                 <div className={'grid'}>
                     <div className={'card'}>
                         <form name="contact" method="POST" data-netlify="true" action="/?success=true">
-                            <input type="hidden" name="form-name" value="contact" />
+                            <input type="hidden" name="contact" value="contact" />
                             <p>
                                 <label htmlFor="name">Name</label>
                                 <input type="text" id="name" name="name" />
