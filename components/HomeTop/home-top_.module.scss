@@ -2,12 +2,31 @@
 
 .home-top {
   @include container;
-  display: flex;
+  @include col2;
+  padding-bottom: 15.184rem;
 }
 
-.content, .img-container {
-  flex: 1 0 50%;
-  gap: 20px;
-  background: rebeccapurple;
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
+
+.title {
+  @include title-1;
+  margin-bottom: 2.5rem;
+}
+
+.text {
+  @include text-20;
+  margin-bottom: 4rem;
+}
+
+.button-container {
+  width: 20.5rem;
+}
+
+
+
+
 
