@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google-pay/button-react": "^2.3.0",
+    "netlify-cms-app": "^2.15.6",
     "next": "^10.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1"
@@ -19,6 +20,7 @@
     "@babel/preset-react": "^7.13.13",
     "classnames": "^2.3.1",
     "frontmatter-markdown-loader": "^3.6.2",
+    "netlify-cli": "^3.30.6",
     "sass": "^1.32.12"
   }
 }
