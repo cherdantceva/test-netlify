@@ -17,16 +17,5 @@ collections:
             fields:
               - { label: "Title", name: "title", widget: "string"}
               - { label: "Content", name: "content", widget: "string" }
-              - { label: "TestContent", name: "test", widget: "string" }
-              - { label: "Image", name: "img", widget: "image"}
-          - label: 'Features'
-            name: "features"
-            widget: "object"
-            fields:
-              - { label: "Title", name: "title", widget: "string"}
-              - label: 'Items'
-                name: "items"
-                widget: list
-                fields:
-                  - { label: "Name", name: "name", widget: "string"}
-                  - { label: "Description", name: "description", widget: "text"}
+
+
