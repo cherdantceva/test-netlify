@@ -21,10 +21,6 @@ export default class Home extends Component {
                 <HomeTop
                     title={top.title}
                     content={top.content}
-                    img={top.img}
-                />
-                <Features
-                    features={features}
                 />
                 {/*<Goal goal={goal}/>*/}
                 {/*<Media media={media}/>*/}
