@@ -191,14 +191,14 @@ footer:
   - text: Студенты
     link: '#'
 social: 
-    - img: img/fb.svg
-      link: '#'
-    - img: img/instagram.svg
-      link: '#'
-    - img: img/vk.svg
-      link: '#'
-    - img: img/telegram.svg
-      link: '#'
+  - img: img/fb.svg
+    link: '#'
+  - img: img/instagram.svg
+    link: '#'
+  - img: img/vk.svg
+    link: '#'
+  - img: img/telegram.svg
+    link: '#'
 info: Фонд целевого капитала МФТИ (ИНН 5008998453, ОГРН 1145000001321) fund@phystech.edu, +7 (495) 642 38 89, официальный сайт — fund.mipt.ru
 copy: Сайт сделан в Accuraten
 ---
