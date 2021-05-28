@@ -26,11 +26,11 @@ export default class Home extends Component {
                 <Features
                     features={features}
                 />
-                <Goal goal={goal}/>
-                <Media media={media}/>
-                <Donors donors={donors}/>
-                <Donation/>
-                <Feedback feedback={feedback} />
+                {/*<Goal goal={goal}/>*/}
+                {/*<Media media={media}/>*/}
+                {/*<Donors donors={donors}/>*/}
+                {/*<Donation/>*/}
+                {/*<Feedback feedback={feedback} />*/}
             </>
         )
     }
