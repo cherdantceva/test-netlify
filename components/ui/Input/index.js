@@ -3,8 +3,8 @@ import style from './input_.module.scss'
 
 import cn from 'classnames'
 
-const Input = (props) => {
-    const {color, placeholder, value, readonly, mod, functionClick, isSelected} = props;
+const Input = React.forwardRef((props, ref) => {
+    const {color, placeholder, value, readonly, mod, functionClick, isSelected, name, onChange} = props;
 
     const inputClass = cn( {
         [style.input]: true,
@@ -19,8 +19,11 @@ const Input = (props) => {
             placeholder={placeholder}
             value={value}
             readOnly={readonly}
+            name={name}
+            onChange={onChange}
+            ref={ref}
         />
     )
-}
+});
 
 export default Input

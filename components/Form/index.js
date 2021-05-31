@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { useRouter } from 'next/router'
 import style from './form_.module.scss'
 
@@ -6,6 +6,7 @@ import Input from '../ui/Input'
 import Check from '../ui/Check'
 import Button from '../ui/Button'
 import Value from '../ui/Value'
+import {debounce} from 'lodash';
 
 import GooglePay from '../GooglePay'
 
@@ -33,27 +34,34 @@ const Form = () => {
             setIsApplePay(true);
         }
     }, []);
-
+    const nameInputRef = useRef(null);
+    const emailInputRef = useRef(null);
 
     const formtransfer = [
         {
             id: 1,
-            placeholder: 'Ваше имя'
+            placeholder: 'Ваше имя',
+            name: 'name',
+            ref: nameInputRef,
         },
         {
             id: 2,
-            placeholder: 'Ваш Email'
+            placeholder: 'Ваш Email',
+            name: 'email',
+            ref: emailInputRef,
         }
     ]
 
     const studenttransfer = [
         {
             id: 1,
-            placeholder: 'Факультет'
+            placeholder: 'Факультет',
+            name: 'faculty',
         },
         {
             id: 2,
-            placeholder: 'Год окончания'
+            placeholder: 'Год окончания',
+            name: 'graduate-year',
         }
     ]
 
@@ -78,10 +86,37 @@ const Form = () => {
         },
     ]
 
+    const onSubmit = async e => {
+        e.preventDefault();
+        const dataToSend = [...new FormData(e.target).entries()]
+            .reduce((acc, [key, value]) => {
+                acc[key] = value;
+                return acc;
+            }, {});
+        const response = await (await fetch('miptbaseback.4129.ru/id', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+        })).json();
+        const {orderStatus, orderId} = response;
+    };
+
+    const DEBOUNCE_MS = 3000;
+    const onNameOrEmailChange = debounce(async () => {
+        const dataToSend = {
+            event: 'Identify',
+            name: nameInputRef.current.value,
+            email: emailInputRef.current.value,
+        };
+        const response = await (await fetch('miptbaseback.4129.ru/log', {
+            method: 'POST',
+            body: JSON.stringify(dataToSend),
+        })).json();
+    }, DEBOUNCE_MS);
+
     return (
         <>
 
-        <form className={style.form}>
+        <form onSubmit={onSubmit} className={style.form}>
             <div className={style.title}>
                 Улучшим вместе жизнь студентов Физтеха!
             </div>
@@ -90,6 +125,9 @@ const Form = () => {
                     <Input
                         color='white'
                         placeholder={formInput.placeholder}
+                        name={formInput.name}
+                        onChange={onNameOrEmailChange}
+                        ref={formInput.ref}
                     />
                 </div>
             ))}
@@ -101,6 +139,7 @@ const Form = () => {
                     id='isStudent'
                     checkChild={true}
                     functionCheck={()=> setIsStudent(!isStudent)}
+                    name='member'
                 >
                 </Check>
             </div>
@@ -112,6 +151,7 @@ const Form = () => {
                         <Input
                             color='white'
                             placeholder={studentInput.placeholder}
+                            name={studentInput.name}
                         />
                     </div>
                 ))}
@@ -146,6 +186,7 @@ const Form = () => {
                     placeholder='Другая сумма'
                     functionClick = {()=> {selectValue('input'); }}
                     isSelected = {activeValue === 'input'}
+                    name="custom-donate-value"
                 />
                 </div>
             </div>
@@ -165,7 +206,7 @@ const Form = () => {
                 <Button
                     text='Поддержать'
                     color='orange'
-                    type='link'
+                    type='button'
                     href={(activeMethod === 'Перевод') ? "/transfer" : "#"}
                     blank={true}
                  />
