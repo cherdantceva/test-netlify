@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { useRouter } from 'next/router'
 import style from './form_.module.scss'
 
 import Input from '../ui/Input'
@@ -13,6 +14,7 @@ import cn from 'classnames'
 
 let btnPay = 'google';
 const Form = () => {
+    const router = useRouter()
 
     const [isApplePay, setIsApplePay] = useState(false);
     const [isStudent, setIsStudent] = useState(false);
@@ -33,7 +35,7 @@ const Form = () => {
     }, []);
 
 
-    const formInputs = [
+    const formtransfer = [
         {
             id: 1,
             placeholder: 'Ваше имя'
@@ -44,7 +46,7 @@ const Form = () => {
         }
     ]
 
-    const studentInputs = [
+    const studenttransfer = [
         {
             id: 1,
             placeholder: 'Факультет'
@@ -77,11 +79,13 @@ const Form = () => {
     ]
 
     return (
+        <>
+
         <form className={style.form}>
             <div className={style.title}>
                 Улучшим вместе жизнь студентов Физтеха!
             </div>
-            {formInputs.map(formInput => (
+            {formtransfer.map(formInput => (
                 <div className={style.input} key={formInput.id}>
                     <Input
                         color='white'
@@ -103,7 +107,7 @@ const Form = () => {
 
             <div className={isStudent ? [style.student + ' ' + style.student_active] : [style.student]}>
 
-                {studentInputs.map(studentInput => (
+                {studenttransfer.map(studentInput => (
                     <div className={style.input} key={studentInput.id}>
                         <Input
                             color='white'
@@ -116,7 +120,7 @@ const Form = () => {
             <div className={style.method}>
                 {paymentMethod.map(method => (
                     <div
-                        className={(activeMethod == method.name) ? [style.item + ' ' + style.item_active] : [style.item]}
+                        className={(activeMethod === method.name) ? [style.item + ' ' + style.item_active] : [style.item]}
                         key={method.id}
                         onClick={()=> {selectMethod(`${method.name}`)}}
                     >
@@ -157,19 +161,14 @@ const Form = () => {
                 {/*<GooglePay />*/}
                 {/*    </div>*/}
                 {/*}*/}
-                <Button
-                    color='white'
-                >
-                </Button>
 
                 <Button
                     text='Поддержать'
                     color='orange'
-                    buttonFunction={(e) => {
-                        e.preventDefault();
-                    }}
-                >
-                </Button>
+                    type='link'
+                    href={(activeMethod === 'Перевод') ? "/transfer" : "#"}
+                    blank={true}
+                 />
             </div>
 
             <div className={style.privacy}>
@@ -178,6 +177,7 @@ const Form = () => {
 
 
         </form>
+        </>
     )
 }
 

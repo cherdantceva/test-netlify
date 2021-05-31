@@ -2,7 +2,6 @@ import React from 'react'
 import style from "./home-top_.module.scss"
 import Button from "../ui/Button";
 
-
 const HomeTop = (props) => {
     const {title, content, img} = props;
     return (
@@ -19,6 +18,7 @@ const HomeTop = (props) => {
                 </div>
             </div>
             <div className={style['img-container']}>
+                <img src={img}/>
             </div>
         </section>
     )
