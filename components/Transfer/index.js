@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import style from "./transfer_.module.scss"
 
 const Transfer = (props, sum, id) => {
@@ -7,6 +7,9 @@ const Transfer = (props, sum, id) => {
     const paymentId = 'test'
     const name = 'test name'
 
+    useEffect(() => {
+      console.log(JSON.parse(localStorage.getItem('paymentData')));
+    }, []);
     const QRCodeValue =
         `ST00012
         |Name=${transfer.valueName}
