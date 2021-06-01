@@ -18,15 +18,15 @@ const Button = (props) => {
     if (type === 'link') {
         return (
             <a href={href}
-                target={(blank) ? '_blank' : '_self'}
-                onClick={buttonFunction}
-                className={buttonClass}>
+               target={(blank) ? '_blank' : '_self'}
+               onClick={buttonFunction}
+               className={buttonClass}>
                 {text}
             </a>
         )
     } else {
         return (
-            <button onClick={buttonFunction} className={buttonClass}>
+            <button onClick={buttonFunction} className={buttonClass} type={type}>
                 {text}
             </button>
         )

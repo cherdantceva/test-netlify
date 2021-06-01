@@ -8,20 +8,13 @@ import Button from '../ui/Button'
 import Value from '../ui/Value'
 import {debounce} from 'lodash';
 
-import GooglePay from '../GooglePay'
-
-import cn from 'classnames'
-
-
-let btnPay = 'google';
 const Form = () => {
     const router = useRouter()
 
-    const [isApplePay, setIsApplePay] = useState(false);
     const [isStudent, setIsStudent] = useState(false);
     const [activeValue, setActiveValue] = useState(null);
     const [activeMethod, setActiveMethod] = useState(null);
-
+    const [currentId, setCurrentId] = useState(null);
     const selectValue = value => {
         setActiveValue(value);
     };
@@ -29,11 +22,6 @@ const Form = () => {
     const selectMethod = method => {
         setActiveMethod(method);
     };
-    useEffect((status) => {
-        if (window.ApplePaySession) {
-            setIsApplePay(true);
-        }
-    }, []);
     const nameInputRef = useRef(null);
     const emailInputRef = useRef(null);
 
@@ -86,6 +74,7 @@ const Form = () => {
         },
     ]
 
+
     const onSubmit = async e => {
         e.preventDefault();
         const dataToSend = [...new FormData(e.target).entries()]
@@ -93,131 +82,131 @@ const Form = () => {
                 acc[key] = value;
                 return acc;
             }, {});
-        const response = await (await fetch('miptbaseback.4129.ru/id', {
+        const response = await (await fetch('http://miptbaseback.4129.ru/id', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
         })).json();
         const {orderStatus, orderId} = response;
+        setCurrentId(orderId)
+        console.log("lkjlkj");
     };
+
 
     const DEBOUNCE_MS = 3000;
     const onNameOrEmailChange = debounce(async () => {
+        const name = nameInputRef.current.value;
+        const email = emailInputRef.current.value;
         const dataToSend = {
             event: 'Identify',
-            name: nameInputRef.current.value,
-            email: emailInputRef.current.value,
+            name: name,
+            email: email,
         };
-        const response = await (await fetch('miptbaseback.4129.ru/log', {
+        localStorage.setItem("name", name);
+        localStorage.setItem("email", email);
+
+        const response = await (await fetch('http://miptbaseback.4129.ru/log', {
             method: 'POST',
             body: JSON.stringify(dataToSend),
         })).json();
     }, DEBOUNCE_MS);
 
+    const openTransfer = () => {
+        window.open('/transfer');
+    }
+
     return (
         <>
 
-        <form onSubmit={onSubmit} className={style.form}>
-            <div className={style.title}>
-                Улучшим вместе жизнь студентов Физтеха!
-            </div>
-            {formtransfer.map(formInput => (
-                <div className={style.input} key={formInput.id}>
-                    <Input
-                        color='white'
-                        placeholder={formInput.placeholder}
-                        name={formInput.name}
-                        onChange={onNameOrEmailChange}
-                        ref={formInput.ref}
-                    />
+            <form onSubmit={onSubmit} className={style.form}>
+                <div className={style.title}>
+                    Улучшим вместе жизнь студентов Физтеха!
                 </div>
-            ))}
-
-            <div className={style.check}>
-                <Check
-                    color='white'
-                    text='Я учился/учусь в МФТИ'
-                    id='isStudent'
-                    checkChild={true}
-                    functionCheck={()=> setIsStudent(!isStudent)}
-                    name='member'
-                >
-                </Check>
-            </div>
-
-            <div className={isStudent ? [style.student + ' ' + style.student_active] : [style.student]}>
-
-                {studenttransfer.map(studentInput => (
-                    <div className={style.input} key={studentInput.id}>
+                {formtransfer.map(formInput => (
+                    <div className={style.input} key={formInput.id}>
                         <Input
                             color='white'
-                            placeholder={studentInput.placeholder}
-                            name={studentInput.name}
+                            placeholder={formInput.placeholder}
+                            name={formInput.name}
+                            onChange={onNameOrEmailChange}
+                            ref={formInput.ref}
                         />
                     </div>
                 ))}
-            </div>
 
-            <div className={style.method}>
-                {paymentMethod.map(method => (
-                    <div
-                        className={(activeMethod === method.name) ? [style.item + ' ' + style.item_active] : [style.item]}
-                        key={method.id}
-                        onClick={()=> {selectMethod(`${method.name}`)}}
+                <div className={style.check}>
+                    <Check
+                        color='white'
+                        text='Я учился/учусь в МФТИ'
+                        id='isStudent'
+                        checkChild={true}
+                        functionCheck={()=> setIsStudent(!isStudent)}
+                        name='member'
                     >
-                        {method.name}
-                    </div>
-                ))}
-            </div>
-
-            <div className={style.value}>
-
-                {paymentValue.map(valueItem => (
-                        <Value key={valueItem.id}
-                            mod='select'
-                            value={valueItem.value}
-                            functionValueActive = {()=> {selectValue(`${valueItem.value}`); }}
-                            isSelected = {activeValue == valueItem.value}
-                        />
-                ))}
-                <div>
-                <Input
-                    color='white'
-                    mod='select'
-                    placeholder='Другая сумма'
-                    functionClick = {()=> {selectValue('input'); }}
-                    isSelected = {activeValue === 'input'}
-                    name="custom-donate-value"
-                />
+                    </Check>
                 </div>
-            </div>
 
-            <div className={style.buttons}>
+                <div className={isStudent ? [style.student + ' ' + style.student_active] : [style.student]}>
 
-                {/*{(isApplePay) ?*/}
-                {/*    <button className={style.apple} lang="ru">*/}
+                    {studenttransfer.map(studentInput => (
+                        <div className={style.input} key={studentInput.id}>
+                            <Input
+                                color='white'
+                                placeholder={studentInput.placeholder}
+                                name={studentInput.name}
+                            />
+                        </div>
+                    ))}
+                </div>
 
-                {/*    </button>*/}
+                <div className={style.method}>
+                    {paymentMethod.map(method => (
+                        <div
+                            className={(activeMethod === method.name) ? [style.item + ' ' + style.item_active] : [style.item]}
+                            key={method.id}
+                            onClick={()=> {selectMethod(`${method.name}`)}}
+                        >
+                            {method.name}
+                        </div>
+                    ))}
+                </div>
 
-                {/* : <div>*/}
-                {/*<GooglePay />*/}
-                {/*    </div>*/}
-                {/*}*/}
+                <div className={style.value}>
 
-                <Button
-                    text='Поддержать'
-                    color='orange'
-                    type='button'
-                    href={(activeMethod === 'Перевод') ? "/transfer" : "#"}
-                    blank={true}
-                 />
-            </div>
+                    {paymentValue.map(valueItem => (
+                        <Value key={valueItem.id}
+                               mod='select'
+                               value={valueItem.value}
+                               functionValueActive = {()=> {selectValue(`${valueItem.value}`); }}
+                               isSelected = {activeValue == valueItem.value}
+                        />
+                    ))}
+                    <div>
+                        <Input
+                            color='white'
+                            mod='select'
+                            placeholder='Другая сумма'
+                            functionClick = {()=> {selectValue('input'); }}
+                            isSelected = {activeValue === 'input'}
+                            name="custom-donate-value"
+                        />
+                    </div>
+                </div>
 
-            <div className={style.privacy}>
-                Отправляя свое пожертвование, вы соглашаетесь с Политикой конфиденциальности, даёте своё согласие на обработку персональных данных и принимаете условия договора пожертвования.
-            </div>
+                <div className={style.buttons}>
+                    <Input
+                        placeholder='Поддержать'
+                        color='orange'
+                        type='submit'
+                        functionClick = {(activeMethod === 'Перевод') ? openTransfer : null}
+                    />
+                </div>
+
+                <div className={style.privacy}>
+                    Отправляя свое пожертвование, вы соглашаетесь с Политикой конфиденциальности, даёте своё согласие на обработку персональных данных и принимаете условия договора пожертвования.
+                </div>
 
 
-        </form>
+            </form>
         </>
     )
 }
