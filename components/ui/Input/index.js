@@ -4,7 +4,7 @@ import style from './input_.module.scss'
 import cn from 'classnames'
 
 const Input = React.forwardRef((props, ref) => {
-    const {color, placeholder, value, readonly, mod, functionClick, isSelected, name, onChange} = props;
+    const {color, placeholder, value, readonly, mod, functionClick, isSelected, name, onChange, type} = props;
 
     const inputClass = cn( {
         [style.input]: true,
@@ -22,6 +22,7 @@ const Input = React.forwardRef((props, ref) => {
             name={name}
             onChange={onChange}
             ref={ref}
+            type={type}
         />
     )
 });
