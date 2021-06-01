@@ -193,7 +193,7 @@ const Form = () => {
                 </div>
 
                 <div className={style.buttons}>
-                    <Input
+                    <Button
                         placeholder='Поддержать'
                         color='orange'
                         type='submit'

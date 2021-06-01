@@ -1,31 +1,39 @@
 import React from 'react'
-import style from './input_.module.scss'
+import style from './button_.module.scss'
 
 import cn from 'classnames'
 
-const Input = React.forwardRef((props, ref) => {
-    const {color, placeholder, value, readonly, mod, functionClick, isSelected, name, type, onChange, onClick} = props;
+const Button = (props) => {
+    const {color, buttonFunction, text, width, type, href, blank} = props;
 
-    const inputClass = cn( {
-        [style.input]: true,
-        [style.input_color_white]: color === 'white',
-        [style.input_color_select]: mod === 'select',
-        [style.input_color_select_active]: isSelected === true
+    const buttonClass = cn( {
+        [style.button]: true,
+        [style.button_color_white]: color === 'white',
+        [style.button_color_orange]: color === 'orange',
+        [style.button_color_blue]: color === 'blue',
+        [style.button_width_100]: width === '100',
     });
+    console.log(href)
 
-    return (
-        <input onClick={functionClick}
-               className={inputClass}
-               placeholder={placeholder}
-               value={value}
-               readOnly={readonly}
-               name={name}
-               onChange={onChange}
-               ref={ref}
-               type={type}
-               onClick={onClick}
-        />
-    )
-});
+    if (type === 'link') {
+        return (
+            <a href={href}
+               target={(blank) ? '_blank' : '_self'}
+               onClick={buttonFunction}
+               className={buttonClass}>
+                {text}
+            </a>
+        )
+    } else {
+        return (
+            <button onClick={buttonFunction} className={buttonClass} type={type}>
+                {text}
+            </button>
+        )
+    }
 
-export default Input
+
+
+}
+
+export default Button
