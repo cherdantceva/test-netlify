@@ -1,15 +1,15 @@
 backend:
   name: git-gateway
   branch: develop # Branch to update (optional; defaults to master)
-media_folder: public/img
-public_folder: img
+media_folder: public/media
+public_folder: media
 collections:
   - name: "pages"
     label: "Pages"
     files:
       - label: "Home"
         name: "home"
-        file: "content/home.md"
+        file: "content/home.json"
         fields:
           - label: "Top"
             name: "top"
@@ -53,14 +53,6 @@ collections:
                 fields:
                   - { label: "Title", name: "title", widget: "string" }
                   - { label: "Text", name: "text", widget: "text" }
-              - label: 'Person'
-                name: "person"
-                widget: list
-                fields:
-                  - { label: "Name", name: "name", widget: "string" }
-                  - { label: "Company", name: "company", widget: "string" }
-                  - { label: "Description", name: "description", widget: "text"}
-                  - { label: "Image", name: "img", widget: "image" }
           - label: 'Media'
             name: "media"
             widget: "object"
@@ -72,7 +64,6 @@ collections:
                 fields:
                   - { label: "Text", name: "text", widget: "text" }
                   - { label: "Image", name: "img", widget: "image" }
-                  - { label: "Description", name: "description", widget: "string" }
           - label: 'Donation'
             name: "donation"
             widget: "object"
@@ -121,4 +112,12 @@ collections:
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Placeholder", name: "placeholder", widget: "string" }
               - { label: "Button", name: "button", widget: "string" }
+  - label: "Inner"
+    name: "InnerPages"
+    folder: "inner/pages"
+    create: true
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Body", name: "body", widget: "markdown" }
+
 

@@ -1,5 +1,4 @@
 import React, {useEffect, useRef, useState} from 'react'
-import { useRouter } from 'next/router'
 import style from './form_.module.scss'
 
 import Input from '../ui/Input'
@@ -9,15 +8,13 @@ import Value from '../ui/Value'
 import {debounce} from 'lodash';
 
 const Form = () => {
-    const router = useRouter()
-
     const [isStudent, setIsStudent] = useState(false);
-    const [activeValue, setActiveValue] = useState(null);
-    const [activeMethod, setActiveMethod] = useState(null);
-    const selectValue = value => {
-        setActiveValue(value);
-    };
-
+    const [activeValue, setActiveValue] = useState('2');
+    const [activeMethod, setActiveMethod] = useState('Карта');
+    const [selectedValue, setSelectedValue] = useState('0');
+    const [currentEmail, setCurrentEmail] = useState(null);
+    const [currentName, setCurrentName] = useState(null);
+    const [otherPlaceholder, setOtherPlaceholder] = useState('Другая сумма');
     const selectMethod = method => {
         setActiveMethod(method);
     };
@@ -74,51 +71,139 @@ const Form = () => {
     ]
 
 
+
     const onSubmit = async e => {
         e.preventDefault();
         const formData = new FormData(e.target);
-        const {result, id: paymentId} = await (await fetch('http://miptbaseback.4129.ru/id')).json();
+        const {result, id: paymentId} = await (await fetch('https://api.miptbase.org/id')).json();
         if (result === 'success') {
-          localStorage.setItem('paymentData', JSON.stringify({
-            paymentId,
-            name: formData.get('name'),
-            value: formData.get('custom-donate-value'),
-          }));
-          if (activeMethod === 'Перевод') {
-            openTransfer();
-          }
+            localStorage.setItem('paymentData', JSON.stringify({
+                paymentId,
+                name: formData.get('name'),
+                email: formData.get('email'),
+                value: selectedValue,
+            }));
+
+            if (activeMethod === 'Перевод') {
+                openTransfer();
+            }
+
+            if (activeMethod === 'Карта') {
+                handlerClick();
+            }
         } else {
-          console.log('error occured');
+            console.log('error occured');
         }
     };
 
 
-    const DEBOUNCE_MS = 3000;
-    const onNameOrEmailChange = debounce(async () => {
-        const name = nameInputRef.current.value;
-        const email = emailInputRef.current.value;
-        const dataToSend = {
-            event: 'Identify',
-            name: name,
-            email: email,
-        };
-        localStorage.setItem("name", name);
-        localStorage.setItem("email", email);
-
-        const response = await (await fetch('http://miptbaseback.4129.ru/log', {
-            method: 'POST',
-            body: JSON.stringify(dataToSend),
-        })).json();
-    }, DEBOUNCE_MS);
+    // const DEBOUNCE_MS = 3000;
+    // const onNameOrEmailChange = debounce(async () => {
+    //     const name = nameInputRef.current.value;
+    //     const email = emailInputRef.current.value;
+    //     const dataToSend = {
+    //         event: 'Identify',
+    //         name: name,
+    //         email: email,
+    //     };
+    //     localStorage.setItem("name", name);
+    //     localStorage.setItem("email", email);
+    //
+    //     const response = await (await fetch('http://miptbaseback.4129.ru/log', {
+    //         method: 'POST',
+    //         body: JSON.stringify(dataToSend),
+    //     })).json();
+    // }, DEBOUNCE_MS);
 
     const openTransfer = () => {
         window.open('/transfer');
     }
 
+    const paymentSumm = Number(selectedValue.replace(/ +/g, '').trim());
+
+    const hiddenForm = `      <form style="visibility: hidden; height: 0;" id='payForm' name="TinkoffPayForm" class="form" onsubmit="pay(this); return false;">
+                    <div class="form__title"> Улучшим вместе жизнь студентов Физтеха!</div>
+                <input class="tinkoffPayRow" type="hidden" name="terminalkey" value="1611313361029"/>
+                    <input class="tinkoffPayRow" type="hidden" name="frame" value="false" />
+                        <input class="tinkoffPayRow" type="hidden" name="language" value="ru" />
+                            <input class="tinkoffPayRow" type="text" name="amount" value=${paymentSumm}
+                                   required />
+                               
+                                 
+                                        <input class="tinkoffPayRow" type="text" placeholder="ФИО плательщика"
+                                               name="name" value=${currentName} />
+                                            <input class="tinkoffPayRow" type="text" placeholder="E-mail"
+                                                   name="email"  value=${currentEmail} />
+                                              
+                                                    <input id='submitButton' class="tinkoffPayRow" type="submit" value="Оплатить" />
+            </form>
+            
+                     <script type="text/javascript">
+                    const terminalkey = document.forms.TinkoffPayForm.terminalkey
+                    const widgetParameters = {
+                    container: 'tinkoffWidgetContainer',
+                    terminalKey: terminalkey.value,
+                    paymentSystems: {
+                    GooglePay: {
+                    environment: "TEST",
+                    merchantId: "12345678901234567890",
+                    buttonColor: "black",
+                    buttonType: "short",
+                    paymentInfo: function () {
+                    return {
+                    infoEmail: "E-mail для отправки информации о платеже",
+                    paymentData: document.forms.TinkoffPayForm
+                    }
+                    }
+                    },
+                     ApplePay: {
+                    buttonOptions: {
+                        lang: 'ru',
+                        color: 'black'
+                    },
+                    paymentInfo: function () {
+                    return {
+                    infoEmail: "E-mail для отправки информации о платеже",
+                    paymentData: document.forms.TinkoffPayForm
+                    }
+                    }
+                    },
+                    
+                    },
+                    };
+                    window.addEventListener('load', function () {
+                    initPayments(widgetParameters);
+                    });
+                    
+                </script>`
+
+    function createHiddenForm() {
+        return {__html: hiddenForm};
+    }
+
+    function CreatedForm() {
+        return <div dangerouslySetInnerHTML={createHiddenForm()} />;
+    }
+
+    let submitButton;
+
+    useEffect(() => {
+        submitButton = document.getElementById('submitButton');
+    });
+
+    const handlerClick = () => {
+        submitButton.click()
+    }
+
+
+
     return (
         <>
+            <CreatedForm />
+
 
             <form onSubmit={onSubmit} className={style.form}>
+
                 <div className={style.title}>
                     Улучшим вместе жизнь студентов Физтеха!
                 </div>
@@ -128,8 +213,16 @@ const Form = () => {
                             color='white'
                             placeholder={formInput.placeholder}
                             name={formInput.name}
-                            onChange={onNameOrEmailChange}
+                            // onChange={onNameOrEmailChange}
                             ref={formInput.ref}
+                            onInput=  {(e)=> {
+                                if (formInput.name === 'name') {
+                                    setCurrentName(e.target.value)
+                                } else if (formInput.name === 'email') {
+                                    setCurrentEmail(e.target.value)
+                                }
+                                }
+                            }
                         />
                     </div>
                 ))}
@@ -177,27 +270,37 @@ const Form = () => {
                         <Value key={valueItem.id}
                                mod='select'
                                value={valueItem.value}
-                               functionValueActive = {()=> {selectValue(`${valueItem.value}`); }}
-                               isSelected = {activeValue == valueItem.value}
+                               functionValueActive = {()=> {setSelectedValue(`${valueItem.value}`); setActiveValue(`${valueItem.id}`);  console.log(paymentSumm)}}
+                               isSelected = {activeValue == valueItem.id}
                         />
                     ))}
                     <div>
                         <Input
                             color='white'
                             mod='select'
-                            placeholder='Другая сумма'
-                            functionClick = {()=> {selectValue('input'); }}
+                            placeholder = {otherPlaceholder}
+                            onClick={()=> {setActiveValue('input')}}
                             isSelected = {activeValue === 'input'}
                             name="custom-donate-value"
+                            onInput=  {(e)=> { setSelectedValue(e.target.value)}}
+                            onFocus={() => setOtherPlaceholder('')}
+                            onBlur={(e) => {setOtherPlaceholder('Другая сумма');
+                                            if ((e.target.value) === '')
+                                            {
+                                                setActiveValue(null)
+                                            }
+                            }}
                         />
                     </div>
                 </div>
 
                 <div className={style.buttons}>
+                    <div className={style['pay-button']} id="tinkoffWidgetContainer"></div>
                     <Button
                         placeholder='Поддержать'
                         color='orange'
                         type='submit'
+                        text='Поддержать'
                     />
                 </div>
 
