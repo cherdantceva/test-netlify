@@ -6,7 +6,6 @@
     "dev": "next dev",
     "build": "next build --unhandled-rejections=strict",
     "start": "next start",
-    "prebuild": "node content/donors.js",
     "export": "npm run build && next export"
   },
   "dependencies": {
