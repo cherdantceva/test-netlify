@@ -4,7 +4,7 @@ header:
   menu: 
     - text: Стандарт
       link: '#'
-    - text: Донорам
+    - text: Донорамdf
       link: '#'
     - text: Управление
       link: '#'
